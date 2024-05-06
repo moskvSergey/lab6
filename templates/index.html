@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 border rounded">
+        <h1>Работы</h1>
+        {% for item in jobs%}
+        <div class="col-md6 border rounded">
+            <h2>{{item.job}}</h2>
+            <div>
+                {{item.collaborators}}
+            </div>
+            <div>
+                Автор - {{item.team_leader}}, Дата написания - {{item.start_date}}
+            </div>
+        </div>
+        {% if current_user.is_authenticated and current_user.id == item.team_leader or current_user.id == 1 %}
+            <div>
+                <a href="/jobs/{{ item.id }}" class="btn btn-warning">
+                    Изменить
+                </a>
+                <a href="/jobs_delete/{{ item.id }}" class="btn btn-danger">
+                    Удалить
+                </a>
+            </div>
+        {% endif %}
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            <a href="jobs" class="btn btn-secondary">Добавить работу</a>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>Департаменты</h1>
+        {% for item in deps%}
+        <div class="col-md6 border rounded">
+            <h2>{{item.title}}</h2>
+            <div>
+                {{item.members}}
+            </div>
+            <div>
+                email - {{item.email}}
+            </div>
+        </div>
+        {% if current_user.is_authenticated and current_user.id == 1 %}
+            <div>
+                <a href="/deps/{{ item.id }}" class="btn btn-warning">
+                    Изменить
+                </a>
+                <a href="/deps_delete/{{ item.id }}" class="btn btn-danger">
+                    Удалить
+                </a>
+            </div>
+        {% endif %}
+        {% endfor %}
+        {% if current_user.is_authenticated and current_user.id == 1 %}
+            <a href="deps" class="btn btn-secondary">Добавить департамент</a>
+        {% endif %}
+    </div>
+    </div>
+</div>
+{% endblock %}
